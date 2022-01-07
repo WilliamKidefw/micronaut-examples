@@ -1,0 +1,54 @@
+plugins {
+    id("com.github.johnrengelman.shadow") version "7.1.1"
+    id("io.micronaut.application") version "3.1.1"
+}
+
+version = findProject("version")
+group = "com.william.develop"
+
+repositories {
+    mavenCentral()
+}
+
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("com.william.develop.*")
+    }
+}
+
+dependencies {
+    annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+    annotationProcessor("io.micronaut.data:micronaut-data-processor")
+    annotationProcessor("io.micronaut.openapi:micronaut-openapi")
+
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut:micronaut-runtime")
+    implementation("io.micronaut.reactor:micronaut-reactor")
+    implementation("io.micronaut.reactor:micronaut-reactor-http-client")
+    implementation("io.swagger.core.v3:swagger-annotations")
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    implementation("org.apache.logging.log4j:log4j-core:${log4j2}")
+    implementation("io.micronaut:micronaut-validation")
+
+    compileOnly("org.projectlombok:lombok")
+    runtimeOnly("com.h2database:h2")
+    runtimeOnly("org.apache.logging.log4j:log4j-api:${log4j2}")
+    runtimeOnly("org.apache.logging.log4j:log4j-slf4j-impl:${log4j2}")
+
+    testImplementation("org.mockito:mockito-core")
+}
+
+
+application {
+    mainClass.set("com.william.develop.Application")
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
+}
+
+graalvmNative.toolchainDetection = false
